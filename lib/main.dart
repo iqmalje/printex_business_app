@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:printex_business_app/authentication/signinpage.dart';
-import 'package:printex_business_app/homepage/printexdetailinput.dart';
+import 'package:printex_business_app/apm/printexdetailinput.dart';
 import 'package:printex_business_app/backend/apmdao.dart';
 import 'package:printex_business_app/homepage/temppage.dart';
 import 'package:printex_business_app/model/apm.dart';

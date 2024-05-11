@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:printex_business_app/apm/apmdetail.dart';
 import 'package:printex_business_app/backend/apmdao.dart';
 import 'package:printex_business_app/components.dart';
+import 'package:printex_business_app/apm/printexdetailinput.dart';
 import 'package:printex_business_app/model/apm.dart';
 
 class Homepage extends StatefulWidget {
@@ -22,7 +24,10 @@ class _HomepageState extends State<Homepage> {
         appBar: PrinTEXComponents()
             .appBar('PrinTEX Registered', context, null, showInfo: true),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => PrintDetailInput()));
+          },
           backgroundColor: Colors.black,
           child: const Icon(Icons.add, color: Colors.white),
         ),
@@ -47,7 +52,10 @@ class _HomepageState extends State<Homepage> {
   Widget buildPrinter(APM apm) {
     return InkWell(
       onTap: () {
-        
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => APMPage(
+                  apm: apm,
+                )));
       },
       child: Container(
         padding: const EdgeInsets.only(left: 40, right: 40, top: 15),

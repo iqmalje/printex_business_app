@@ -41,6 +41,9 @@ dependencies:
   email_validator: ^2.1.17
   image_picker: ^1.0.8
   flutter_launcher_icons: ^0.13.1
+  time_range_picker: ^2.2.0
+  map_launcher: ^3.3.0
+  smooth_page_indicator: ^1.1.0
 
 dev_dependencies:
   flutter_test:
