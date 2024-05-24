@@ -8,7 +8,9 @@ import 'package:printex_business_app/apm/apmdetail.dart';
 import 'package:printex_business_app/backend/apmdao.dart';
 import 'package:printex_business_app/components.dart';
 import 'package:printex_business_app/apm/printexdetailinput.dart';
+import 'package:printex_business_app/model/providers.dart';
 import 'package:printex_business_app/model/apm.dart';
+import 'package:provider/provider.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -39,13 +41,34 @@ class _HomepageState extends State<Homepage> {
                   if (!snapshot.hasData) {
                     return const CircularProgressIndicator();
                   }
-
-                  return ListView.builder(
-                      padding: const EdgeInsets.only(top: 20),
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        return buildPrinter(snapshot.data!.elementAt(index));
-                      });
+                  context
+                      .read<ListAPMProvider>()
+                      .changeAPM(newAPM: snapshot.data!);
+                  if (snapshot.data!.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset('assets/images/printer-amico.png'),
+                          const SizedBox(height: 10),
+                          const Text(
+                            "No registered PrinTEX yet",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
+                          ),
+                          const SizedBox(height: 10),
+                          const Text("Register PrinTEX now"),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return ListView.builder(
+                        padding: const EdgeInsets.only(top: 20),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return buildPrinter(snapshot.data!.elementAt(index));
+                        });
+                  }
                 })));
   }
 
@@ -88,7 +111,7 @@ class _HomepageState extends State<Homepage> {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.grey),
                           ),
-                          child: Image.asset('assets/images/printer-amico.png'),
+                          child: Image.network(apm.pictureUrl),
                         ),
                       ),
                       Column(
@@ -130,7 +153,9 @@ class _HomepageState extends State<Homepage> {
                                   child: Padding(
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 10),
-                                      child: Text('Active')),
+                                      child: Text(apm.isActive
+                                          ? 'Active'
+                                          : 'Maintenance')),
                                 ),
                               )
                             ],

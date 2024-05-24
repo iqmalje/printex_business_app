@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:printex_business_app/profilepage/settings.dart';
 // import 'package:printex_app/pages/homepage/howtousepage.dart';
 // import 'package:printex_app/pages/settings/settings.dart';
@@ -164,6 +165,21 @@ class PrinTEXComponents {
         ),
       ),
     );
+  }
+
+  TextStyle getTextStyle(
+      {double fontSize = 18,
+      FontWeight fontWeight = FontWeight.w500,
+      FontStyle? style,
+      Color color = Colors.black,
+      TextDecoration? decoration}) {
+    return TextStyle(
+        fontFamily: 'Poppins',
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+        fontStyle: style,
+        color: color,
+        decoration: decoration);
   }
 
   Widget outlinedButton(double width, String label, void Function() onTap,

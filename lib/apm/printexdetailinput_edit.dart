@@ -94,9 +94,15 @@ class _PrintDetailInputEditState extends State<PrintDetailInputEdit> {
               Row(
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        isActive = true;
+                      });
+                    },
                     style: TextButton.styleFrom(
-                      backgroundColor: const Color.fromRGBO(249, 249, 249, 1),
+                      backgroundColor: !isActive
+                          ? const Color.fromARGB(255, 160, 160, 160)
+                          : const Color.fromRGBO(249, 249, 249, 1),
                       elevation: 2.0, // Elevation for drop shadow
                       shadowColor: const Color.fromRGBO(0, 0, 0, 0.25),
                     ),
@@ -108,9 +114,15 @@ class _PrintDetailInputEditState extends State<PrintDetailInputEdit> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          isActive = false;
+                        });
+                      },
                       style: TextButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(249, 249, 249, 1),
+                        backgroundColor: isActive
+                            ? Color.fromARGB(255, 160, 160, 160)
+                            : const Color.fromRGBO(249, 249, 249, 1),
                         elevation: 2.0,
                         shadowColor: const Color.fromRGBO(0, 0, 0, 0.25),
                       ),
@@ -135,14 +147,17 @@ class _PrintDetailInputEditState extends State<PrintDetailInputEdit> {
               ),
               DetailComponent().input("State", state),
               DetailComponent().title("PrinTEX Photos (Exactly 2 Photos)"),
-              DetailComponent().inputImage("1st PrinTEX Photo", () async {
+              DetailComponent().inputImage(
+                  picture1 == null ? "1st PrinTEX Photo" : "Uploaded 1st Photo",
+                  () async {
                 picture1 = await picker.pickImage(source: ImageSource.gallery);
-                if (picture1 == null) {
-                  print("wtf");
-                }
+                setState(() {});
               }, iconPath: 'assets/images/Vector.png'),
-              DetailComponent().inputImage("2nd PrinTEX Photo", () async {
+              DetailComponent().inputImage(
+                  picture2 == null ? "2nd PrinTEX Photo" : "Uploaded 2nd Photo",
+                  () async {
                 picture2 = await picker.pickImage(source: ImageSource.gallery);
+                setState(() {});
               }, iconPath: 'assets/images/Vector.png'),
               DetailComponent().title("PrinTEX Operation Hours"),
               Row(
@@ -424,7 +439,7 @@ class _PrintDetailInputEditState extends State<PrintDetailInputEdit> {
                                                   0.3,
                                               child: ElevatedButton(
                                                 onPressed: () {
-                                                  print("test");
+                                                  Navigator.of(context).pop();
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor:
@@ -437,7 +452,7 @@ class _PrintDetailInputEditState extends State<PrintDetailInputEdit> {
                                                   ),
                                                 ),
                                                 child: Text(
-                                                  "Cance",
+                                                  "Cancel",
                                                   style: const TextStyle(
                                                       color: Colors.white),
                                                 ),
@@ -448,8 +463,14 @@ class _PrintDetailInputEditState extends State<PrintDetailInputEdit> {
                                             ),
                                             DetailComponent()
                                                 .alertButton(context, () async {
-                                              print("test");
-                                              return;
+                                              print("asdsads");
+                                              await ApmDAO()
+                                                  .deleteAPM(apm.apmID);
+
+                                              Navigator.of(context)
+                                                  .pushNamedAndRemoveUntil(
+                                                      '/home',
+                                                      (route) => false);
                                             },
                                                     text: "Confirm",
                                                     color: Colors.black),
@@ -584,6 +605,8 @@ class _PrintDetailInputEditState extends State<PrintDetailInputEdit> {
                         apm, apmDetails, operatingHoursAPM, apmPricing);
 
                     print("DONE");
+
+                    Navigator.of(context).pop();
                   }, text: "Confirm", color: Colors.black),
                 ],
               ),
@@ -680,8 +703,9 @@ class DetailComponent {
   Widget dropdowninput(String text, List<String> items,
       void Function(String?) onTap, String valueText) {
     return DropdownButtonFormField(
+      isExpanded: true,
       hint: Align(
-        alignment: Alignment.center,
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
           overflow: TextOverflow.ellipsis,
@@ -842,7 +866,7 @@ class DetailComponent {
     return Container(
       width: MediaQuery.of(context).size.width * 0.3,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onTap,
         style: ElevatedButton.styleFrom(
           backgroundColor: color!,
           shape: RoundedRectangleBorder(

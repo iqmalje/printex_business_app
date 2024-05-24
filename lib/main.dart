@@ -4,7 +4,9 @@ import 'package:printex_business_app/authentication/signinpage.dart';
 import 'package:printex_business_app/apm/printexdetailinput.dart';
 import 'package:printex_business_app/backend/apmdao.dart';
 import 'package:printex_business_app/homepage/temppage.dart';
+import 'package:printex_business_app/model/providers.dart';
 import 'package:printex_business_app/model/apm.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 bool isLoggedIn = false;
@@ -28,21 +30,27 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      initialRoute: '/',
-      routes: {
-        '/signin': (context) => const MainPage(),
-        '/home': (context) => TempPage(),
-        '/printingpage': (context) => TempPage(
-              pageindex: 1,
-            )
-      },
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ListAPMProvider()),
+        ChangeNotifierProvider(create: (context) => BankDetailsProvider())
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        initialRoute: '/',
+        routes: {
+          '/signin': (context) => const MainPage(),
+          '/home': (context) => TempPage(),
+          '/printingpage': (context) => TempPage(
+                pageindex: 1,
+              )
+        },
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: isLoggedIn ? TempPage() : const MainPage(),
       ),
-      home: isLoggedIn ? TempPage() : const MainPage(),
     );
   }
 }

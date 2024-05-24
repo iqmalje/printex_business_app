@@ -142,7 +142,25 @@ class _APMPageState extends State<APMPage> {
                                 onPressed: () {
                                   showDialog(
                                       context: context,
-                                      builder: (context) => Container());
+                                      builder: (context) => AlertDialog(
+                                            content: SizedBox(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                      'Single sided Black & White : RM${pricing!.blackWhiteSingle.toStringAsFixed(2)}/page'),
+                                                  Text(
+                                                      'Both sided Black & White : RM${pricing!.blackWhiteBoth.toStringAsFixed(2)}/page'),
+                                                  Text(
+                                                      'Single sided Color : RM${pricing!.colorSingle.toStringAsFixed(2)}/page'),
+                                                  Text(
+                                                      'Both sided Color : RM${pricing!.colorBoth.toStringAsFixed(2)}/page'),
+                                                ],
+                                              ),
+                                            ),
+                                          ));
                                 },
                                 child: Text('See pricing'));
                           },

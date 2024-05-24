@@ -57,9 +57,15 @@ class _PrintDetailInputState extends State<PrintDetailInput> {
               Row(
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        isActive = true;
+                      });
+                    },
                     style: TextButton.styleFrom(
-                      backgroundColor: const Color.fromRGBO(249, 249, 249, 1),
+                      backgroundColor: !isActive
+                          ? const Color.fromARGB(255, 160, 160, 160)
+                          : const Color.fromRGBO(249, 249, 249, 1),
                       elevation: 2.0, // Elevation for drop shadow
                       shadowColor: const Color.fromRGBO(0, 0, 0, 0.25),
                     ),
@@ -71,9 +77,15 @@ class _PrintDetailInputState extends State<PrintDetailInput> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          isActive = false;
+                        });
+                      },
                       style: TextButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(249, 249, 249, 1),
+                        backgroundColor: isActive
+                            ? Color.fromARGB(255, 160, 160, 160)
+                            : const Color.fromRGBO(249, 249, 249, 1),
                         elevation: 2.0,
                         shadowColor: const Color.fromRGBO(0, 0, 0, 0.25),
                       ),
@@ -98,14 +110,17 @@ class _PrintDetailInputState extends State<PrintDetailInput> {
               ),
               DetailComponent().input("State", state),
               DetailComponent().title("PrinTEX Photos (Exactly 2 Photos)"),
-              DetailComponent().inputImage("1st PrinTEX Photo", () async {
+              DetailComponent().inputImage(
+                  picture1 == null ? "1st PrinTEX Photo" : "Uploaded 1st Photo",
+                  () async {
                 picture1 = await picker.pickImage(source: ImageSource.gallery);
-                if (picture1 == null) {
-                  print("wtf");
-                }
+                setState(() {});
               }, iconPath: 'assets/images/Vector.png'),
-              DetailComponent().inputImage("2nd PrinTEX Photo", () async {
+              DetailComponent().inputImage(
+                  picture2 == null ? "2nd PrinTEX Photo" : "Uploaded 2nd Photo",
+                  () async {
                 picture2 = await picker.pickImage(source: ImageSource.gallery);
+                setState(() {});
               }, iconPath: 'assets/images/Vector.png'),
               DetailComponent().title("PrinTEX Operation Hours"),
               Row(
@@ -342,99 +357,99 @@ class _PrintDetailInputState extends State<PrintDetailInput> {
                       .detailRowInput("A4 Both Sided Color", bothcolor),
                 ],
               ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text("I wanna delete this PrinTEX.",
-                      style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                      )),
-                  // TextButton(
-                  //     onPressed: () {},
-                  //     child: Text(
-                  //       "Delete",
-                  //       style: TextStyle(
-                  //           fontStyle: FontStyle.italic,
-                  //           color: Colors.black,
-                  //           decoration: TextDecoration.underline,
-                  //           decorationThickness: 2),
-                  //     )),
-                  GestureDetector(
-                      onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) => Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    AlertDialog(
-                                      backgroundColor: Colors.white,
-                                      content: const Padding(
-                                        padding: EdgeInsets.only(top: 8.0),
-                                        child: Text(
-                                          "Are you sure you want to delete this PrinTEX?",
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                      actions: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.3,
-                                              child: ElevatedButton(
-                                                onPressed: () {
-                                                  print("test");
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      const Color.fromRGBO(
-                                                          217, 217, 217, 1),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                  ),
-                                                ),
-                                                child: Text(
-                                                  "Cance",
-                                                  style: const TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            DetailComponent()
-                                                .alertButton(context, () async {
-                                              print("test");
-                                              return;
-                                            },
-                                                    text: "Confirm",
-                                                    color: Colors.black),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ));
-                      },
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: Text(
-                          " Delete",
-                          style: TextStyle(
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline),
-                        ),
-                      )),
-                ],
-              ),
+              // Row(
+              //   mainAxisSize: MainAxisSize.min,
+              //   children: [
+              //     const Text("I wanna delete this PrinTEX.",
+              //         style: TextStyle(
+              //           fontStyle: FontStyle.italic,
+              //         )),
+              //     // TextButton(
+              //     //     onPressed: () {},
+              //     //     child: Text(
+              //     //       "Delete",
+              //     //       style: TextStyle(
+              //     //           fontStyle: FontStyle.italic,
+              //     //           color: Colors.black,
+              //     //           decoration: TextDecoration.underline,
+              //     //           decorationThickness: 2),
+              //     //     )),
+              //     GestureDetector(
+              //         onTap: () {
+              //           showDialog(
+              //               context: context,
+              //               builder: (context) => Column(
+              //                     mainAxisAlignment: MainAxisAlignment.center,
+              //                     children: [
+              //                       AlertDialog(
+              //                         backgroundColor: Colors.white,
+              //                         content: const Padding(
+              //                           padding: EdgeInsets.only(top: 8.0),
+              //                           child: Text(
+              //                             "Are you sure you want to delete this PrinTEX?",
+              //                             textAlign: TextAlign.center,
+              //                           ),
+              //                         ),
+              //                         actions: [
+              //                           Row(
+              //                             mainAxisAlignment:
+              //                                 MainAxisAlignment.center,
+              //                             children: [
+              //                               Container(
+              //                                 width: MediaQuery.of(context)
+              //                                         .size
+              //                                         .width *
+              //                                     0.3,
+              //                                 child: ElevatedButton(
+              //                                   onPressed: () {
+              //                                     print("test");
+              //                                   },
+              //                                   style: ElevatedButton.styleFrom(
+              //                                     backgroundColor:
+              //                                         const Color.fromRGBO(
+              //                                             217, 217, 217, 1),
+              //                                     shape: RoundedRectangleBorder(
+              //                                       borderRadius:
+              //                                           BorderRadius.circular(
+              //                                               10),
+              //                                     ),
+              //                                   ),
+              //                                   child: Text(
+              //                                     "Cance",
+              //                                     style: const TextStyle(
+              //                                         color: Colors.white),
+              //                                   ),
+              //                                 ),
+              //                               ),
+              //                               const SizedBox(
+              //                                 width: 10,
+              //                               ),
+              //                               DetailComponent()
+              //                                   .alertButton(context, () async {
+              //                                 print("test");
+              //                                 return;
+              //                               },
+              //                                       text: "Confirm",
+              //                                       color: Colors.black),
+              //                             ],
+              //                           ),
+              //                         ],
+              //                       ),
+              //                     ],
+              //                   ));
+              //         },
+              //         child: const Padding(
+              //           padding: EdgeInsets.symmetric(vertical: 8),
+              //           child: Text(
+              //             " Delete",
+              //             style: TextStyle(
+              //                 fontStyle: FontStyle.italic,
+              //                 fontWeight: FontWeight.bold,
+              //                 decoration: TextDecoration.underline),
+              //           ),
+              //         )),
+              //   ],
+              // ),
               const SizedBox(
                 height: 10,
               ),
@@ -549,6 +564,8 @@ class _PrintDetailInputState extends State<PrintDetailInput> {
                         apmPricing, picture1!, picture2!);
 
                     print("DONE");
+
+                    Navigator.of(context).pop();
                   }, text: "Confirm", color: Colors.black),
                 ],
               ),
@@ -645,8 +662,9 @@ class DetailComponent {
   Widget dropdowninput(
       String text, List<String> items, void Function(String?) onTap) {
     return DropdownButtonFormField(
+      isExpanded: true,
       hint: Align(
-        alignment: Alignment.center,
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
           overflow: TextOverflow.ellipsis,

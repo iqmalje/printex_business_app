@@ -14,6 +14,7 @@ class ApmDAO {
           pictureurl,
           picture_url_2,
           paper_amount,
+          status,
           apmaddresses ( address1, address2, city, state, lat, lng )
           ''').match({'owned_by': userID});
 
@@ -66,7 +67,7 @@ class ApmDAO {
       'printername': apm.printerName,
       'paper_amount': 0,
       'owned_by': supabase.auth.currentUser!.id,
-      'status': apm.isActive ? 'Active' : 'Maintanence',
+      'status': apm.isActive ? 'Active' : 'Maintenance',
     }).eq('apmid', apm.apmID);
 
     await supabase.from('apmdetails').update({
@@ -83,8 +84,8 @@ class ApmDAO {
       'address2': apm.address2,
       'city': apm.city,
       'state': apm.state,
-      'lat': 0,
-      'lng': 0
+      'lat': 1.56651,
+      'lng': 103.62383
     }).eq('apmid', apm.apmID);
 
     await supabase.from('apm_costs').update({
@@ -116,7 +117,7 @@ class ApmDAO {
           'picture_url_2': 'apm.pictureUrl2',
           'paper_amount': 0,
           'owned_by': supabase.auth.currentUser!.id,
-          'status': apm.isActive ? 'Active' : 'Maintanence',
+          'status': apm.isActive ? 'Active' : 'Maintenance',
         })
         .select()
         .single();
@@ -148,8 +149,8 @@ class ApmDAO {
       'address2': apm.address2,
       'city': apm.city,
       'state': apm.state,
-      'lat': 0,
-      'lng': 0
+      'lat': 1.56651,
+      'lng': 103.62383
     });
 
     await supabase.from('apm_costs').insert({
@@ -222,5 +223,9 @@ class ApmDAO {
         blackWhiteBoth: double.parse(data['black_white_both'].toString()),
         colorSingle: double.parse(data['color_single'].toString()),
         colorBoth: double.parse(data['color_both'].toString()));
+  }
+
+  Future<void> deleteAPM(String apmID) async {
+    await supabase.from('apms').delete().eq('apmid', apmID);
   }
 }
