@@ -16,7 +16,7 @@ class PrintingOrderPage extends StatefulWidget {
 }
 
 class _PrintingOrderPageState extends State<PrintingOrderPage> {
-  bool isDashboard = false;
+  bool isDashboard = true;
   DateTime? startdate, enddate;
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,13 @@ class _PrintingOrderPageState extends State<PrintingOrderPage> {
                 FutureBuilder(
                     future: OrderDAO().getBriefOrderInfo(),
                     builder: (context, snapshot) {
-                      if (!snapshot.hasData) return Text('lol');
+                      if (!snapshot.hasData) {
+                        return buildOrderTracker({
+                          'total_order': 0,
+                          'successful_order': 0,
+                          'failed_order': 0
+                        });
+                      }
                       return buildOrderTracker(snapshot.data!);
                     }),
                 Row(
@@ -164,7 +170,8 @@ class _PrintingOrderPageState extends State<PrintingOrderPage> {
                                     maxLines: 1,
                                   ),
                                   Text(DateFormat('dd MMMM yyyy, hh:mm a')
-                                      .format(currentOrder.date))
+                                      .format(currentOrder.date
+                                          .add(Duration(hours: 8))))
                                 ],
                               ),
                             ),

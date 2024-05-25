@@ -6,9 +6,13 @@ class OrderDAO {
   SupabaseClient supabase = Supabase.instance.client;
 
   Future<Map<String, int>> getBriefOrderInfo() async {
-    var data = await supabase.rpc('get_brief_order_info').single();
+    var data = await supabase.rpc('get_brief_order_info', params: {
+      'currdate': DateFormat('yyyy-MM-dd%')
+          .format(DateTime.now().subtract(Duration(hours: 8)))
+    }).single();
 
-    print(data);
+    print(DateFormat('yyyy-MM-dd')
+        .format(DateTime.now().subtract(Duration(hours: 8))));
     return {
       'total_order': data['total_order'],
       'successful_order': data['successful_order'],
@@ -73,7 +77,10 @@ date
   }
 
   Future<Map<String, dynamic>> getBriefRevenueInfo() async {
-    var data = await supabase.rpc('get_brief_revenue_info').single();
+    var data = await supabase.rpc('get_brief_revenue_info', params: {
+      'currdate': DateFormat('yyyy-MM-dd%')
+          .format(DateTime.now().subtract(Duration(hours: 8)))
+    }).single();
 
     print(data);
 

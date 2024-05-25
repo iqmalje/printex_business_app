@@ -29,7 +29,7 @@ class _eWalletPageState extends State<eWalletPage>
   void initState() {
     super.initState();
 
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -70,14 +70,11 @@ class _eWalletPageState extends State<eWalletPage>
             TabBar(controller: tabController, tabs: [
               Container(
                   height: 50, child: const Center(child: Text('Dashboard'))),
-              Container(
-                  height: 50, child: const Center(child: Text('Payments'))),
               Container(height: 50, child: const Center(child: Text('Bank'))),
             ]),
             Expanded(
               child: TabBarView(controller: tabController, children: [
                 buildDashboard(context),
-                buildPayment(),
                 buildBank(context),
               ]),
             )
@@ -199,113 +196,221 @@ class _eWalletPageState extends State<eWalletPage>
     return FutureBuilder(
         future: OrderDAO().getRevenueInfo(startdate, enddate),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return const CircularProgressIndicator();
-          return Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: MediaQuery.sizeOf(context).width * 0.8,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                          offset: const Offset(0, 2),
-                          blurRadius: 2,
-                          color: Colors.black.withOpacity(0.25))
-                    ],
-                    color: const Color(0xFFF5F5F5)),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Duration',
-                        style: PrinTEXComponents().getTextStyle(
-                            fontWeight: FontWeight.w400, fontSize: 14),
-                      ),
-                      Text(
-                        '${DateFormat('dd MMMM yyyy').format(startdate)} - ${DateFormat('dd MMMM yyyy').format(enddate)}',
-                        style: PrinTEXComponents().getTextStyle(),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Revenue',
-                        style: PrinTEXComponents().getTextStyle(
-                            fontWeight: FontWeight.w400, fontSize: 14),
-                      ),
-                      Text(
-                        'RM ${(snapshot.data!['revenue'] as double).toStringAsFixed(2)}',
-                        style: PrinTEXComponents().getTextStyle(),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Payments',
-                                  style: PrinTEXComponents().getTextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14),
-                                ),
-                                Text(
-                                  snapshot.data!['payments'].toString(),
-                                  style: PrinTEXComponents().getTextStyle(),
-                                )
-                              ],
+          if (!snapshot.hasData) {
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: MediaQuery.sizeOf(context).width * 0.8,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                            offset: const Offset(0, 2),
+                            blurRadius: 2,
+                            color: Colors.black.withOpacity(0.25))
+                      ],
+                      color: const Color(0xFFF5F5F5)),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Duration',
+                          style: PrinTEXComponents().getTextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 14),
+                        ),
+                        Text(
+                          '${DateFormat('dd MMMM yyyy').format(startdate)} - ${DateFormat('dd MMMM yyyy').format(enddate)}',
+                          style: PrinTEXComponents().getTextStyle(),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Revenue',
+                          style: PrinTEXComponents().getTextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 14),
+                        ),
+                        Text(
+                          'RM 0.00',
+                          style: PrinTEXComponents().getTextStyle(),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Payments',
+                                    style: PrinTEXComponents().getTextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
+                                  ),
+                                  Text(
+                                    '0',
+                                    style: PrinTEXComponents().getTextStyle(),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                          Container(
-                            color: Colors.black,
-                            height: 50,
-                            width: 1,
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Customers',
-                                  style: PrinTEXComponents().getTextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14),
-                                ),
-                                Text(
-                                  snapshot.data!['customers'].toString(),
-                                  style: PrinTEXComponents().getTextStyle(),
-                                )
-                              ],
+                            Container(
+                              color: Colors.black,
+                              height: 50,
+                              width: 1,
                             ),
-                          ),
-                        ],
-                      )
-                    ],
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Customers',
+                                    style: PrinTEXComponents().getTextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
+                                  ),
+                                  Text(
+                                    '0',
+                                    style: PrinTEXComponents().getTextStyle(),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                'PrinTEX\'s Revenue',
-                style: PrinTEXComponents().getTextStyle(fontSize: 14),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              buildViewPrinters(context)
-            ],
-          );
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'PrinTEX\'s Revenue',
+                  style: PrinTEXComponents().getTextStyle(fontSize: 14),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                buildViewPrinters(context)
+              ],
+            );
+          } else {
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: MediaQuery.sizeOf(context).width * 0.8,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                            offset: const Offset(0, 2),
+                            blurRadius: 2,
+                            color: Colors.black.withOpacity(0.25))
+                      ],
+                      color: const Color(0xFFF5F5F5)),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Duration',
+                          style: PrinTEXComponents().getTextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 14),
+                        ),
+                        Text(
+                          '${DateFormat('dd MMMM yyyy').format(startdate)} - ${DateFormat('dd MMMM yyyy').format(enddate)}',
+                          style: PrinTEXComponents().getTextStyle(),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Revenue',
+                          style: PrinTEXComponents().getTextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 14),
+                        ),
+                        Text(
+                          'RM ${(snapshot.data!['revenue'] as double).toStringAsFixed(2)}',
+                          style: PrinTEXComponents().getTextStyle(),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Payments',
+                                    style: PrinTEXComponents().getTextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
+                                  ),
+                                  Text(
+                                    snapshot.data!['payments'].toString(),
+                                    style: PrinTEXComponents().getTextStyle(),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              color: Colors.black,
+                              height: 50,
+                              width: 1,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Customers',
+                                    style: PrinTEXComponents().getTextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
+                                  ),
+                                  Text(
+                                    snapshot.data!['customers'].toString(),
+                                    style: PrinTEXComponents().getTextStyle(),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'PrinTEX\'s Revenue',
+                  style: PrinTEXComponents().getTextStyle(fontSize: 14),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                buildViewPrinters(context)
+              ],
+            );
+          }
         });
   }
 
@@ -368,64 +473,123 @@ class _eWalletPageState extends State<eWalletPage>
     return FutureBuilder(
         future: OrderDAO().getBriefRevenueInfo(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return CircularProgressIndicator();
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'RM ${(snapshot.data!['revenue'] as double).toStringAsFixed(2)}',
-                    style: PrinTEXComponents().getTextStyle(),
-                  ),
-                  Text(
-                    'Revenue',
-                    style: PrinTEXComponents().getTextStyle(
-                        fontWeight: FontWeight.w400, fontSize: 16),
-                  )
-                ],
-              ),
-              Container(
-                height: 30,
-                width: 1,
-                color: Colors.black,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    snapshot.data!['payments'].toString(),
-                    style: PrinTEXComponents().getTextStyle(),
-                  ),
-                  Text(
-                    'Payments',
-                    style: PrinTEXComponents().getTextStyle(
-                        fontWeight: FontWeight.w400, fontSize: 16),
-                  )
-                ],
-              ),
-              Container(
-                height: 30,
-                width: 1,
-                color: Colors.black,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    snapshot.data!['customers'].toString(),
-                    style: PrinTEXComponents().getTextStyle(),
-                  ),
-                  Text(
-                    'Customers',
-                    style: PrinTEXComponents().getTextStyle(
-                        fontWeight: FontWeight.w400, fontSize: 16),
-                  )
-                ],
-              ),
-            ],
-          );
+          if (!snapshot.hasData) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'RM 0.00',
+                      style: PrinTEXComponents().getTextStyle(),
+                    ),
+                    Text(
+                      'Revenue',
+                      style: PrinTEXComponents().getTextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 16),
+                    )
+                  ],
+                ),
+                Container(
+                  height: 30,
+                  width: 1,
+                  color: Colors.black,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '0',
+                      style: PrinTEXComponents().getTextStyle(),
+                    ),
+                    Text(
+                      'Payments',
+                      style: PrinTEXComponents().getTextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 16),
+                    )
+                  ],
+                ),
+                Container(
+                  height: 30,
+                  width: 1,
+                  color: Colors.black,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '0',
+                      style: PrinTEXComponents().getTextStyle(),
+                    ),
+                    Text(
+                      'Customers',
+                      style: PrinTEXComponents().getTextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 16),
+                    )
+                  ],
+                ),
+              ],
+            );
+          } else {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'RM ${(snapshot.data!['revenue'] as double).toStringAsFixed(2)}',
+                      style: PrinTEXComponents().getTextStyle(),
+                    ),
+                    Text(
+                      'Revenue',
+                      style: PrinTEXComponents().getTextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 16),
+                    )
+                  ],
+                ),
+                Container(
+                  height: 30,
+                  width: 1,
+                  color: Colors.black,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      snapshot.data!['payments'].toString(),
+                      style: PrinTEXComponents().getTextStyle(),
+                    ),
+                    Text(
+                      'Payments',
+                      style: PrinTEXComponents().getTextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 16),
+                    )
+                  ],
+                ),
+                Container(
+                  height: 30,
+                  width: 1,
+                  color: Colors.black,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      snapshot.data!['customers'].toString(),
+                      style: PrinTEXComponents().getTextStyle(),
+                    ),
+                    Text(
+                      'Customers',
+                      style: PrinTEXComponents().getTextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 16),
+                    )
+                  ],
+                ),
+              ],
+            );
+          }
         });
   }
 }
