@@ -179,7 +179,7 @@ class _MainPageState extends State<MainPage> {
                                     isLoading = false;
                                   });
                                 }
-                              }, isLoading: isLoading),
+                              }, isLoading: isLoading, black: true),
                               const SizedBox(
                                 height: 15,
                               ),

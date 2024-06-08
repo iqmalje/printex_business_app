@@ -183,7 +183,7 @@ class PrinTEXComponents {
   }
 
   Widget outlinedButton(double width, String label, void Function() onTap,
-      {bool isLoading = false, double height = 55}) {
+      {bool isLoading = false, double height = 55, bool black = false}) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -194,7 +194,8 @@ class PrinTEXComponents {
           height: height,
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
-              side: const BorderSide(width: 1, color: Colors.black),
+              side: BorderSide(
+                  width: 1, color: black ? Colors.white : Colors.black),
               borderRadius: BorderRadius.circular(20),
             ),
           ),
@@ -203,9 +204,9 @@ class PrinTEXComponents {
               if (!isLoading) {
                 return Text(
                   label,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontFamily: 'Poppins',
-                      color: Colors.black,
+                      color: black ? Colors.white : Colors.black,
                       fontSize: 14,
                       fontWeight: FontWeight.w700),
                 );
