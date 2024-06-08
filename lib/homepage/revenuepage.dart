@@ -10,6 +10,7 @@ import 'package:printex_business_app/model/apm.dart';
 import 'package:printex_business_app/model/bank.dart';
 import 'package:printex_business_app/model/providers.dart';
 import 'package:printex_business_app/revenue/bankdetail.dart';
+import 'package:printex_business_app/revenue/monthlyreport.dart';
 import 'package:provider/provider.dart';
 
 class eWalletPage extends StatefulWidget {
@@ -400,6 +401,17 @@ class _eWalletPageState extends State<eWalletPage>
                 const SizedBox(
                   height: 20,
                 ),
+                SizedBox(
+                  height: 50,
+                  child: PrinTEXComponents().outlinedButton(
+                      MediaQuery.sizeOf(context).width * 0.4, 'Monthly Report',
+                      () {
+                    Switcher().SwitchPage(context, MonthlyReportPage());
+                  }),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Text(
                   'PrinTEX\'s Revenue',
                   style: PrinTEXComponents().getTextStyle(fontSize: 14),
@@ -414,41 +426,47 @@ class _eWalletPageState extends State<eWalletPage>
         });
   }
 
-  ListView buildViewPrinters(BuildContext context) {
-    return ListView.separated(
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          APM currentAPM = context.read<ListAPMProvider>().apm[index];
-          return Row(
-            children: [
-              Image.network(
-                currentAPM.pictureUrl,
-                height: 70,
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      currentAPM.printerName,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: PrinTEXComponents().getTextStyle(fontSize: 14),
+  Widget buildViewPrinters(BuildContext context) {
+    return Flexible(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10.0),
+        child: ListView.separated(
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              APM currentAPM = context.read<ListAPMProvider>().apm[index];
+              return Row(
+                children: [
+                  Image.network(
+                    currentAPM.pictureUrl,
+                    height: 70,
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          currentAPM.printerName,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: PrinTEXComponents().getTextStyle(fontSize: 14),
+                        ),
+                        const Text('Revenue : RM 0.00')
+                      ],
                     ),
-                    const Text('Revenue : RM 0.00')
-                  ],
-                ),
-              ),
-              IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.arrow_forward_ios))
-            ],
-          );
-        },
-        separatorBuilder: (context, index) => const Divider(),
-        itemCount: context.watch<ListAPMProvider>().apm.length);
+                  ),
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.arrow_forward_ios))
+                ],
+              );
+            },
+            separatorBuilder: (context, index) => const Divider(),
+            itemCount: context.watch<ListAPMProvider>().apm.length),
+      ),
+    );
   }
 
   Row buildDate() {

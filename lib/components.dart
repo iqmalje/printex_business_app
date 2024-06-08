@@ -194,7 +194,7 @@ class PrinTEXComponents {
           height: height,
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
-              side: const BorderSide(width: 3, color: Colors.white),
+              side: const BorderSide(width: 1, color: Colors.black),
               borderRadius: BorderRadius.circular(20),
             ),
           ),
@@ -205,8 +205,8 @@ class PrinTEXComponents {
                   label,
                   style: const TextStyle(
                       fontFamily: 'Poppins',
-                      color: Colors.white,
-                      fontSize: 20,
+                      color: Colors.black,
+                      fontSize: 14,
                       fontWeight: FontWeight.w700),
                 );
               } else {
@@ -215,7 +215,7 @@ class PrinTEXComponents {
                   height: 50,
                   child: Center(
                       child: CircularProgressIndicator(
-                    color: Colors.white,
+                    color: Colors.black,
                   )),
                 );
               }

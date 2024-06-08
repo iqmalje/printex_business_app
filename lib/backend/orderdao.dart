@@ -5,14 +5,17 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class OrderDAO {
   SupabaseClient supabase = Supabase.instance.client;
 
-  Future<Map<String, int>> getBriefOrderInfo() async {
+  Future<Map<String, int>> getBriefOrderInfo({DateTime? timeSelected}) async {
     var data = await supabase.rpc('get_brief_order_info', params: {
-      'currdate': DateFormat('yyyy-MM-dd%')
-          .format(DateTime.now().subtract(Duration(hours: 8)))
+      'currdate': timeSelected != null
+          ? DateFormat('yyyy-MM%').format(timeSelected)
+          : DateFormat('yyyy-MM-dd%')
+              .format(DateTime.now().subtract(Duration(hours: 8)))
     }).single();
 
-    print(DateFormat('yyyy-MM-dd')
+    print(DateFormat('yyyy-MM')
         .format(DateTime.now().subtract(Duration(hours: 8))));
+    print("DAHHHHH");
     return {
       'total_order': data['total_order'],
       'successful_order': data['successful_order'],
@@ -76,10 +79,13 @@ date
     }
   }
 
-  Future<Map<String, dynamic>> getBriefRevenueInfo() async {
+  Future<Map<String, dynamic>> getBriefRevenueInfo(
+      {DateTime? timeSelected}) async {
     var data = await supabase.rpc('get_brief_revenue_info', params: {
-      'currdate': DateFormat('yyyy-MM-dd%')
-          .format(DateTime.now().subtract(Duration(hours: 8)))
+      'currdate': timeSelected != null
+          ? DateFormat('yyyy-MM%').format(timeSelected)
+          : DateFormat('yyyy-MM-dd%')
+              .format(DateTime.now().add(Duration(hours: 8)))
     }).single();
 
     print(data);
@@ -93,11 +99,18 @@ date
 
   Future<Map<String, dynamic>> getRevenueInfo(
       DateTime startdate, DateTime enddate) async {
+    //testing
+    var dataTest = await supabase
+        .from('orders')
+        .select('*')
+        .gte('date', DateFormat('yyyy-MM-dd').format(startdate))
+        .lte('date',
+            DateFormat('yyyy-MM-dd').format(enddate.add(Duration(days: 1))));
+    print(dataTest);
     var data = await supabase.rpc('get_revenue_duration', params: {
-      'startdate':
-          '${startdate.year}-${startdate.month.toString().padLeft(2, '0')}-${startdate.day.toString().padLeft(2, '0')}',
+      'startdate': DateFormat('yyyy-MM-dd').format(startdate),
       'enddate':
-          '${enddate.year}-${enddate.month.toString().padLeft(2, '0')}-${enddate.day.toString().padLeft(2, '0')}',
+          DateFormat('yyyy-MM-dd').format(enddate.add(Duration(days: 1))),
     }).single();
 
     print(data);
